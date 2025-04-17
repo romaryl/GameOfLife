@@ -55,7 +55,7 @@ function play() {
             nextCells.forEach(cell => {
                 cells[cell.id].innerText = cell.innerText
             })
-        }, 500)
+        }, 1000)
 
     } else {
         document.getElementById("play").innerHTML = ">";
@@ -100,7 +100,6 @@ function lookLeft(cell) {
 }
 
 function lookRight(cell) {
-    console.log(cell.id)
     if ([9, 19, 29, 39, 49, 59, 69, 79, 89, 99].includes(Number(cell.id))) {
         if (cells[Number(cell.id) - 9].innerText == "Ø") {
             return true
@@ -113,9 +112,8 @@ function lookRight(cell) {
 }
 
 function lookUpLeft(cell) {
-    console.log(cell)
     if (cell.id == 0) {
-        if (cells.slice(-1)[0].innerText == "Ø") {
+        if (cells[99].innerText == "Ø") {
             return true
         } else return false
 
@@ -137,8 +135,13 @@ function lookUpLeft(cell) {
 }
 
 function lookUpRight(cell) {
-    if (cell.id < 10) {
-        if (cells[Number(cell.id) + 90].innerText == "Ø") {
+    if (cell.id == 9) {
+        if (cells[90].innerText == "Ø") {
+            return true
+        } else return false
+
+    } else if (cell.id < 10) {
+        if (cells[Number(cell.id) + 91].innerText == "Ø") {
             return true
         } else return false
 
@@ -147,10 +150,6 @@ function lookUpRight(cell) {
             return true
         } else return false
 
-    } else if (cell.id == 9) {
-        if (cells[-10].innerText == "Ø") {
-            return true
-        } else return false
 
     } else {
         if (cells[Number(cell.id) - 9].innerText == "Ø") {
@@ -161,9 +160,7 @@ function lookUpRight(cell) {
 
 function lookDownleft(cell) {
     if ([0, 10, 20, 30, 40, 50, 60, 70, 80].includes(Number(cell.id))) {
-        if (cells[Number(cell.id) + 19].innerText == "Ø") {
-            return true
-        } else return false
+        return (cells[Number(cell.id) + 19].innerText == "Ø")
 
     } else if (cell.id == 90) {
         if (cells[10].innerText == "Ø") {
@@ -217,12 +214,15 @@ function checkAround(cell) {
         "downRight": lookDownRight(cell)
     }
 
+    console.log("cell id : " + cell.id)
+    console.log(cell)
     console.log(gridCheck)
 
     let count = 0;
     for (let direction in gridCheck) {
         if (gridCheck[direction] === true) count++;
     }
+    console.log("count: " + count);
 
     // a live cell with fewer than two live neighbors dies, 
     // a live cell with two or three live neighbors survives, 
