@@ -1,7 +1,7 @@
 let a = [[], [], [], [], [], [], [], [], [], []],
-    b = [[], [], [], [], [], [], [], [], [], []],
-    c = [[], [], [], [], [], [], [], [], [], []],
-    d = [[], [], [], [], [], [], [], [], [], []],
+    b = [[], [], ["Ø"], ["Ø"], ["Ø"], [], [], [], [], []],
+    c = [[], [], [], [], ["Ø"], [], [], [], [], []],
+    d = [[], [], [], ["Ø"], [], [], [], [], [], []],
     e = [[], [], [], [], [], [], [], [], [], []],
     f = [[], [], [], [], [], [], [], [], [], []],
     g = [[], [], [], [], [], [], [], [], [], []],
@@ -55,7 +55,7 @@ function play() {
             nextCells.forEach(cell => {
                 cells[cell.id].innerText = cell.innerText
             })
-        }, 1000)
+        }, 500)
 
     } else {
         document.getElementById("play").innerHTML = ">";
@@ -247,14 +247,21 @@ function checkAround(cell) {
 
 // Game Of Life's play button
 document.getElementById("play").addEventListener("click", play)
+window.addEventListener("keydown", function(event) {
+    if (event.key === " ") {
+        play();
+    }
+});
 
 // grid installation
 table.forEach((column, columnIndex) => {
     column.forEach((cell, lineIndex) => {
+        console.log("grind installation cell :")
+        console.log(cell)
         const cellElement = document.createElement("div");
         cellElement.className = "cell";
         cellElement.id = `${(columnIndex == 0) ? "" : columnIndex}${lineIndex}`;
-        cellElement.innerHTML = "-";
+        cellElement.innerHTML = (cell[0] == "Ø") ? "Ø" : "-";
 
         cellElement.addEventListener("click", function (cell) {
             changeCell(cell.target);
