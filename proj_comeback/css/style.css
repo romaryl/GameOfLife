@@ -1,0 +1,28 @@
+h1 {
+    font-size: 1.5420rem;
+    font-family:monospace
+}
+
+a {
+    font-size: 1.42rem;
+}
+
+.main {
+    margin-top : 10px;
+    margin-left: 10px;
+    display: grid;
+    grid-template-columns : 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px ;
+}
+
+.cell {
+    text-align: center;
+    border: solid 1px rgba(0, 0, 0, 0.100);
+}
+
+ .on {
+    display: inline;
+ }
+
+ .off {
+    display: none;
+ }
