@@ -1,4 +1,4 @@
-let a = [[], [], [], [], [], [], [], [], [], []],
+const a = [[], [], [], [], [], [], [], [], [], []],
     b = [[], [], ["Ø"], ["Ø"], ["Ø"], [], [], [], [], []],
     c = [[], [], [], [], ["Ø"], [], [], [], [], []],
     d = [[], [], [], ["Ø"], [], [], [], [], [], []],
@@ -9,25 +9,34 @@ let a = [[], [], [], [], [], [], [], [], [], []],
     i = [[], [], [], [], [], [], [], [], [], []],
     j = [[], [], [], [], [], [], [], [], [], []];
 
-let table = [a, b, c, d, e, f, g, h, i, j],
-    main = document.querySelector(".main");
+const table = [a, b, c, d, e, f, g, h, i, j],
+    main = document.querySelector(".main"),
+    clock = document.querySelector("input"),
+    resetClock = document.querySelector("button");
+
+resetClock.innerHTML = clock.value + "ms";
 
 let cells = [],
     GoLInterval;
 
 function changeCell(cell) {
     console.log("changeCell's cell : " + cell.id)
+
+
     const html = cell.innerHTML;
     if (html == "-") {
+        cell.className = "cell live"
         cell.innerHTML = "Ø";
     } else {
+        cell.className = "cell"
         cell.innerHTML = "-";
     }
 }
 
-function play() {
+function play(play) {
     console.log(document.getElementById("play").innerText)
-    if (document.getElementById("play").innerText == ">") {
+
+    if (document.getElementById("play").innerText == ">" || play === true) {
         document.getElementById("play").innerText = "⏸";
 
         GoLInterval = setInterval(() => {
@@ -55,7 +64,8 @@ function play() {
             nextCells.forEach(cell => {
                 cells[cell.id].innerText = cell.innerText
             })
-        }, 500)
+            console.log(clock.value)
+        }, clock.value)
 
     } else {
         document.getElementById("play").innerHTML = ">";
@@ -214,15 +224,10 @@ function checkAround(cell) {
         "downRight": lookDownRight(cell)
     }
 
-    console.log("cell id : " + cell.id)
-    console.log(cell)
-    console.log(gridCheck)
-
     let count = 0;
     for (let direction in gridCheck) {
         if (gridCheck[direction] === true) count++;
     }
-    console.log("count: " + count);
 
     // a live cell with fewer than two live neighbors dies, 
     // a live cell with two or three live neighbors survives, 
@@ -230,24 +235,29 @@ function checkAround(cell) {
     // a dead cell with exactly three live neighbors becomes alive
 
     if (count < 2 && cell.innerText == "Ø") { // a live cell with fewer than two live neighbors dies, 
+        cell.className = "cell die count-" + count;
         return false;
-        // cell.innerText = "-";
+
     } else if ((count == 2 || count == 3) && cell.innerText == "Ø") { // a live cell with two or three live neighbors survives, 
+        cell.className = "cell live count-" + count;
         return true;
-        // cell.innerText = "Ø";
+
     } else if (count > 3 && cell.innerText == "Ø") {  // a live cell with more than three live neighbors dies,
+        cell.className = "cell die count-" + count;
         return false;
-        // cell.innerText == "-";
+
     } else if (count == 3 && cell.innerText == "-") { // a dead cell with exactly three live neighbors becomes alive
+        cell.className = "cell born count-" + count;
         return true;
-        // cell.innerText = "Ø";
+    } else {
+        cell.className = "cell count-" + count
     }
-    // return true
+
 }
 
 // Game Of Life's play button
 document.getElementById("play").addEventListener("click", play)
-window.addEventListener("keydown", function(event) {
+window.addEventListener("keydown", function (event) {
     if (event.key === " ") {
         play();
     }
@@ -256,10 +266,10 @@ window.addEventListener("keydown", function(event) {
 // grid installation
 table.forEach((column, columnIndex) => {
     column.forEach((cell, lineIndex) => {
-        console.log("grind installation cell :")
-        console.log(cell)
+        // console.log("grind installation cell :")
+        // console.log(cell)
         const cellElement = document.createElement("div");
-        cellElement.className = "cell";
+        cellElement.className = (cell[0] == "Ø") ? "cell live" : "cell";
         cellElement.id = `${(columnIndex == 0) ? "" : columnIndex}${lineIndex}`;
         cellElement.innerHTML = (cell[0] == "Ø") ? "Ø" : "-";
 
@@ -271,6 +281,19 @@ table.forEach((column, columnIndex) => {
         cells.push(cellElement);
     });
 });
+
+clock.addEventListener("change", (e) => {
+    resetClock.textContent = e.target.value + "ms"
+
+    if (document.getElementById("play").innerText == "⏸") {
+        play(true)
+    }
+})
+
+resetClock.addEventListener("click", (e) => {
+    resetClock.textContent = "500ms"
+})
+
 
 // just a simple underscore blinkering
 setInterval(() => {
