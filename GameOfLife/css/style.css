@@ -1,6 +1,7 @@
 h1 {
     font-size: 1.5420rem;
     font-family: monospace;
+    margin-bottom: 0.2rem;
 }
 
 form {
@@ -17,9 +18,10 @@ input {
     background: none;
     border: none;
 }
+
 input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
-  }
+}
 
 a {
     font-size: 1.42rem;

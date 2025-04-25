@@ -11,13 +11,14 @@ const a = [[], [], [], [], [], [], [], [], [], []],
 
 const table = [a, b, c, d, e, f, g, h, i, j],
     main = document.querySelector(".main"),
-    clock = document.querySelector("input"),
+    clockInput = document.querySelector("input"),
     resetClock = document.querySelector("button");
 
-resetClock.innerHTML = clock.value + "ms";
+resetClock.innerHTML = clockInput.value + "ms";
 
 let cells = [],
-    GoLInterval;
+    GoLInterval,
+    toggleTest = "pause";
 
 function changeCell(cell) {
     console.log("changeCell's cell : " + cell.id)
@@ -33,17 +34,21 @@ function changeCell(cell) {
     }
 }
 
-function play(play) {
+function play(option) {
     console.log(document.getElementById("play").innerText)
 
-    if (document.getElementById("play").innerText == ">" || play === true) {
+    if (option == "toggle") {
+        option = (document.getElementById("play").innerText == ">") ? "play" : "pause";
+    }
+
+    if (option === "play") {
         document.getElementById("play").innerText = "⏸";
 
         GoLInterval = setInterval(() => {
 
             let nextCells = [];
 
-            cells.forEach((cell, index) => {
+            cells.map((cell, index) => {
                 const willBeAliveNextInterval = checkAround(cell),
                     cellElement = document.createElement("div");
 
@@ -61,11 +66,11 @@ function play(play) {
                 nextCells.push(cellElement)
             })
 
-            nextCells.forEach(cell => {
+            nextCells.map(cell => {
                 cells[cell.id].innerText = cell.innerText
             })
-            console.log(clock.value)
-        }, clock.value)
+            console.log(clockInput.value)
+        }, clockInput.value)
 
     } else {
         document.getElementById("play").innerHTML = ">";
@@ -173,7 +178,7 @@ function lookDownleft(cell) {
         return (cells[Number(cell.id) + 19].innerText == "Ø")
 
     } else if (cell.id == 90) {
-        if (cells[10].innerText == "Ø") {
+        if (cells[9].innerText == "Ø") {
             return true
         } else return false
 
@@ -224,6 +229,9 @@ function checkAround(cell) {
         "downRight": lookDownRight(cell)
     }
 
+    console.log("cell : " + cell.id)
+    console.log(gridCheck)
+
     let count = 0;
     for (let direction in gridCheck) {
         if (gridCheck[direction] === true) count++;
@@ -256,10 +264,13 @@ function checkAround(cell) {
 }
 
 // Game Of Life's play button
-document.getElementById("play").addEventListener("click", play)
+document.getElementById("play").addEventListener("click", () => {
+    play("toggle")
+})
+
 window.addEventListener("keydown", function (event) {
     if (event.key === " ") {
-        play();
+        play("toggle");
     }
 });
 
@@ -282,23 +293,34 @@ table.forEach((column, columnIndex) => {
     });
 });
 
-clock.addEventListener("change", (e) => {
-    resetClock.textContent = e.target.value + "ms"
+// pause the game while the input of the clock is changing
+clockInput.addEventListener("mousedown", (e) => {
+    (document.getElementById("play").innerText == ">") ? toggleTest = "pause" : toggleTest = "play";
+    resetClock.textContent = e.target.value + "ms";
+    play("pause");
+})
 
-    if (document.getElementById("play").innerText == "⏸") {
-        play(true)
+// resume eventually the game when the input of the clock is set
+clockInput.addEventListener("change", (e) => {
+    console.log("change")
+    resetClock.textContent = e.target.value + "ms";
+
+    if (toggleTest == "play") {
+        toggleTest = "pause";
+        play("play");
+    } else {
+        play("pause");
     }
 })
 
 resetClock.addEventListener("click", (e) => {
-    resetClock.textContent = "500ms"
+    resetClock.textContent = "500ms";
 })
-
 
 // just a simple underscore blinkering
 setInterval(() => {
     if (document.getElementById("underscore").className == "on") {
-        document.getElementById("underscore").className = "off"
+        document.getElementById("underscore").className = "off";
     } else {
         document.getElementById("underscore").className = "on";
     }
