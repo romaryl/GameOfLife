@@ -10,7 +10,9 @@ a {
 
 form {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    width: fit-content;
 }
 
 button {
@@ -19,29 +21,22 @@ button {
 }
 
 input {
-    background: none;
-    border: none;
-}
-
-input[type=number]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
+    width: 220px;
 }
 
 p {
     font-family: monospace;
     margin: 0;
-    /* margin-left: 1rem; */
+    width: 200px;
+    text-align: center;
 }
 
 .main {
     display: grid;
     grid-template-columns: 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px;
     border: solid gray 1px;
-    margin-top: 10px;
-    margin-left: 10px;
+    margin: 10px;
     width: min-content;
-    max-width: 200px;
-    height: 200px;
 }
 
 .cell:hover{
@@ -83,7 +78,7 @@ p {
 }
 
 .die {
-    background-color: #9867a13a;
+    background-color: #50795934;
 }
 
 .live {

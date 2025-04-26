@@ -18,7 +18,7 @@ resetClock.innerHTML = clockInput.value + "ms";
 
 let cells = [],
     GoLInterval,
-    toggleTest = "pause";
+    playState = "pause";
 
 function changeCell(cell) {
     console.log("changeCell's cell : " + cell.id);
@@ -32,10 +32,12 @@ function changeCell(cell) {
     }
 }
 
+// main function, GoLInterval is set and modified here
+// option: <text> "play" "pause" "toggle"
 function play(option) {
-    console.log(document.getElementById("play").innerText)
+    console.log(document.getElementById("play").innerText);
 
-    if (option == "toggle") {
+    if (option === "toggle") {
         option = (document.getElementById("play").innerText == ">") ? "play" : "pause";
     }
 
@@ -61,112 +63,79 @@ function play(option) {
                 } else {
                     cellElement.innerHTML = "-";
                 }
-                nextCells.push(cellElement)
+                nextCells.push(cellElement);
             })
 
             nextCells.map(cell => {
-                cells[cell.id].innerText = cell.innerText
+                cells[cell.id].innerText = cell.innerText;
             })
-        }, clockInput.value)
+        }, clockInput.value);
 
     } else {
         document.getElementById("play").innerHTML = ">";
-        clearInterval(GoLInterval)
+        clearInterval(GoLInterval);
     }
 }
 
 function lookUp(cell) {
     if (cell.id < 10) {
-        if (cells[(Number(cell.id) + 90)].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[(Number(cell.id) + 90)].innerText == "Ø";
     } else {
-        if (cells[Number(cell.id) - 10].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) - 10].innerText == "Ø";
     }
 }
 
 function lookDown(cell) {
     if (cell.id > 89) {
-        if (cells[Number(cell.id) - 90].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) - 90].innerText == "Ø";
     } else {
-        if (cells[Number(cell.id) + 10].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) + 10].innerText == "Ø";
     }
 }
 
 function lookLeft(cell) {
     if ([0, 10, 20, 30, 40, 50, 60, 70, 80, 90].includes(Number(cell.id))) {
-        if (cells[Number(cell.id) + 9].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) + 9].innerText == "Ø";
     } else {
-        if (cells[Number(cell.id) - 1].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) - 1].innerText == "Ø";
     }
 }
 
 function lookRight(cell) {
     if ([9, 19, 29, 39, 49, 59, 69, 79, 89, 99].includes(Number(cell.id))) {
-        if (cells[Number(cell.id) - 9].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) - 9].innerText == "Ø";
     } else {
-        if (cells[Number(cell.id) + 1].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) + 1].innerText == "Ø";
     }
 }
 
 function lookUpLeft(cell) {
     if (cell.id == 0) {
-        if (cells[99].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[99].innerText == "Ø";
 
     } else if ([10, 20, 30, 40, 50, 60, 70, 80, 90].includes(Number(cell.id))) {
-        if (cells[Number(cell.id) - 1].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) - 1].innerText == "Ø";
 
     } else if (cell.id < 10) {
-        if (cells[Number(cell.id) + 89].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) + 89].innerText == "Ø";
 
     } else {
-        if (cells[Number(cell.id) - 11].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) - 11].innerText == "Ø";
     }
 }
 
 function lookUpRight(cell) {
     if (cell.id == 9) {
-        if (cells[90].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[90].innerText == "Ø";
 
     } else if (cell.id < 10) {
-        if (cells[Number(cell.id) + 91].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) + 91].innerText == "Ø";
 
     } else if ([19, 29, 39, 49, 59, 69, 79, 89, 99].includes(Number(cell.id))) {
-        if (cells[Number(cell.id) - 19].innerText == "Ø") {
-            return true
-        } else return false
-
+        return cells[Number(cell.id) - 19].innerText == "Ø";
 
     } else {
-        if (cells[Number(cell.id) - 9].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) - 9].innerText == "Ø";
     }
 }
 
@@ -175,42 +144,28 @@ function lookDownleft(cell) {
         return (cells[Number(cell.id) + 19].innerText == "Ø")
 
     } else if (cell.id == 90) {
-        if (cells[9].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[9].innerText == "Ø";
 
     } else if (cell.id > 89) {
-        if (cells[Number(cell.id) - 91].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) - 91].innerText == "Ø";
 
     } else {
-        if (cells[Number(cell.id) + 9].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) + 9].innerText == "Ø";
     }
 }
 
 function lookDownRight(cell) {
     if ([9, 19, 29, 39, 49, 59, 69, 79, 89].includes(Number(cell.id))) {
-        if (cells[Number(cell.id) + 1].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) + 1].innerText == "Ø";
 
     } else if (cell.id == 99) {
-        if (cells[0].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[0].innerText == "Ø";
 
     } else if (cell.id > 89) {
-        if (cells[Number(cell.id) - 89].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) - 89].innerText == "Ø";
 
     } else {
-        if (cells[Number(cell.id) + 11].innerText == "Ø") {
-            return true
-        } else return false
+        return cells[Number(cell.id) + 11].innerText == "Ø";
     }
 }
 
@@ -301,7 +256,7 @@ table.forEach((column, columnIndex) => {
 
 // pause the game while the input of the clock is changing
 clockInput.addEventListener("mousedown", (e) => {
-    (document.getElementById("play").innerText == ">") ? toggleTest = "pause" : toggleTest = "play";
+    (document.getElementById("play").innerText == ">") ? playState = "pause" : playState = "play";
     resetClock.textContent = e.target.value + "ms";
     play("pause");
 })
@@ -316,8 +271,8 @@ clockInput.addEventListener("change", (e) => {
     console.log("change")
     resetClock.textContent = e.target.value + "ms";
 
-    if (toggleTest == "play") {
-        toggleTest = "pause";
+    if (playState == "play") {
+        playState = "pause";
         play("play");
     } else {
         play("pause");
