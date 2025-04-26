@@ -21,15 +21,13 @@ let cells = [],
     toggleTest = "pause";
 
 function changeCell(cell) {
-    console.log("changeCell's cell : " + cell.id)
-
-
+    console.log("changeCell's cell : " + cell.id);
     const html = cell.innerHTML;
     if (html == "-") {
-        cell.className = "cell live"
+        cell.className = "cell live";
         cell.innerHTML = "Ø";
     } else {
-        cell.className = "cell"
+        cell.className = "cell";
         cell.innerHTML = "-";
     }
 }
@@ -69,7 +67,6 @@ function play(option) {
             nextCells.map(cell => {
                 cells[cell.id].innerText = cell.innerText
             })
-            console.log(clockInput.value)
         }, clockInput.value)
 
     } else {
@@ -229,9 +226,6 @@ function checkAround(cell) {
         "downRight": lookDownRight(cell)
     }
 
-    console.log("cell : " + cell.id)
-    console.log(gridCheck)
-
     let count = 0;
     for (let direction in gridCheck) {
         if (gridCheck[direction] === true) count++;
@@ -257,19 +251,31 @@ function checkAround(cell) {
     } else if (count == 3 && cell.innerText == "-") { // a dead cell with exactly three live neighbors becomes alive
         cell.className = "cell born count-" + count;
         return true;
+
     } else {
-        cell.className = "cell count-" + count
+        cell.className = "cell count-" + count;
     }
 
 }
 
 // Game Of Life's play button
 document.getElementById("play").addEventListener("click", () => {
-    play("toggle")
+    play("toggle");
+})
+document.getElementById("space").addEventListener("click", (e) => {
+    e.target.className = "pressed";
+    setTimeout(() => {
+        e.target.className = "";
+    }, clockInput.value);
+    play("toggle");
 })
 
 window.addEventListener("keydown", function (event) {
     if (event.key === " ") {
+        this.document.getElementById("space").className = "pressed";
+        setTimeout(() => {
+            this.document.getElementById("space").className = "";
+        }, clockInput.value);
         play("toggle");
     }
 });
@@ -300,6 +306,11 @@ clockInput.addEventListener("mousedown", (e) => {
     play("pause");
 })
 
+// actualise continuously the clock's value when modifying
+clockInput.addEventListener("input", () => {
+    resetClock.innerText = clockInput.value + "ms";
+})
+
 // resume eventually the game when the input of the clock is set
 clockInput.addEventListener("change", (e) => {
     console.log("change")
@@ -325,4 +336,4 @@ setInterval(() => {
         document.getElementById("underscore").className = "on";
     }
 
-}, 1000)
+}, clockInput.value)
